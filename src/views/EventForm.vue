@@ -12,6 +12,19 @@
       <h3>Where is your event?</h3>
 
       <BaseInput v-model="event.location" type="text" label="Location" />
+
+      <h3>Who is your organizer?</h3>
+      <label>Select an Organizer</label>
+      <select v-model="event.organizer.id">
+        <option
+          v-for="option in GStore.organizer"
+          :value="option.id"
+          :key="option.id"
+          :selected="option.id === event.organizer.id"
+        >
+          {{ option.name }}
+        </option>
+      </select>
       <button type="submit">Submit</button>
     </form>
 
@@ -21,19 +34,16 @@
 
 <script>
 import EventService from '@/services/EventService.js'
-import BaseInput from '@/components/BaseInput.vue'
 export default {
   inject: ['GStore'],
-  components: {
-    BaseInput
-  },
   data() {
     return {
       event: {
         category: '',
         title: '',
         description: '',
-        location: ''
+        location: '',
+        organizer: { id: '', name: '' }
       }
     }
   },

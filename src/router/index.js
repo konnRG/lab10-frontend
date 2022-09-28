@@ -11,6 +11,7 @@ import AddEvent from '@/views/EventForm.vue'
 import NProgress from 'nprogress'
 import GStore from '@/store'
 import EventService from '@/services/EventService'
+import OrganizerService from '@/services/OrganizerService.js'
 const routes = [
   {
     path: '/',
@@ -68,7 +69,17 @@ const routes = [
   {
     path: '/add-event',
     name: 'AddEvent',
-    component: AddEvent
+    component: AddEvent,
+    beforeEnter: () => {
+      return OrganizerService.getOrganizers()
+        .then((response) => {
+          GStore.organizer = response.data
+        })
+        .catch(() => {
+          GStore.organizer = null
+          console.log('Cannot load organizer.')
+        })
+    }
   },
   {
     path: '/404/:resource',
